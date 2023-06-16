@@ -1,0 +1,19 @@
+version: "2.3"
+
+services:
+    
+    bc:
+        container_name: bc
+        build: .
+        restart: always
+        ports:
+            - "10022:10022"
+        environment:
+            - MODE=PRODUCTION
+        volumes:
+            - ./:/app
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "50m"
+
