@@ -1,0 +1,27 @@
+body {
+    background: url(../images/bg.jpg);
+}
+
+.bubble::after {
+    content: ' ';
+    position: relative;
+    width: 0;
+    height: 0;
+    bottom: 40px;
+    left: -77px;
+    border: 20px solid transparent;
+        border-top-color: transparent;
+        border-bottom-color: transparent;
+        border-bottom-style: solid;
+        border-bottom-width: 20px;
+    border-color: transparent transparent transparent white;
+    transform: rotate(90deg);
+}
+
+.bubblechat > div {
+    background-color: rgb(96, 165, 250);
+}
+.pink > div {
+    background-color: rgb(240, 111, 214);
+}
+

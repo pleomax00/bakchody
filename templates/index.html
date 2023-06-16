@@ -1,10 +1,20 @@
-<html>
-    <head>
-        <link rel="icon" type="image/x-icon" href="/static/images/favicon.png">
-    </head>
+{% extends 'master.html' %}
 
-    <body>
-        <h1>Room ID</h1>
-    </body>
+{% block extraheaders %}
+{% endblock %}
 
-</html>
+{% block maincontent %}
+<div class="bubble flex h-full items-center flex-col justify-end">
+    <div class="w-2/3 lg:w-1/4 p-8 shadow bg-white my-10 border-gray-100 border-3 rounded-lg">
+        <form method="POST" class="flex flex-col content-center m-0 items-center gap-2">
+            <input type="text" name="nick" required autocomplete="off" placeholder="Nickname"
+                class="focus:outline-none text-center" value="{{nick}}" />
+            <input type="text" name="room" required autocomplete="off" placeholder="Shared Key"
+                class="focus:outline-none text-center" value="{{roomid}}" />
+            <input type="submit"
+                class="bg-blue-400 w-24 border border-blue-500 rounded-sm cursor-pointer text-white text-center"
+                value="Connect!" />
+        </form>
+    </div>
+</div>
+{% endblock %}
