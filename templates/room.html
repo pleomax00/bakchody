@@ -1,36 +1,46 @@
 {% extends 'master.html' %}
 
 {% block extraheaders %}
-<script type="text/javascript">
-    window.localStorage.nick = "{{nick}}";
-</script>
 {% endblock %}
+
+{% block title %}Chat{% endblock %}
 
 {% block maincontent %}
 
 <div class="allchat flex h-full flex-col justify-end">
 
-    <div class="chat flex flex-col p-4">
+    <div class="chat flex flex-col p-4 overflow-auto">
         <div class="bubblechat flex items-center bg justify-end">
-            <div class="w-2/3 lg:w-1/3 p-4 shadow my-3 border-gray-100 border-3 rounded-full rounded-br-none">
+            <div class="w-2/3 lg:w-1/3 p-1 px-4 shadow my-3 border-gray-100 border-3 rounded-lg rounded-br-none">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis ultrices nunc ac venenatis.
+                Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec sit
+                amet placerat neque, ut tincidunt eros. Quisque aliquam ultrices tempor. Nulla maximus ex et lacus
+                egestas, nec lacinia tellus rutrum. Nam iaculis, nisl ut venenatis hendrerit, dui orci tristique urna,
+                nec vulputate nulla turpis quis ipsum. Morbi ornare tortor sed dui pharetra tincidunt. Aliquam et ipsum
+                sit amet purus tristique mattis. Integer accumsan diam et magna maximus, eu sagittis nunc tristique.
+                Vestibulum hendrerit accumsan tempor. Integer molestie, elit sed vehicula venenatis, felis elit sagittis
+                nibh, nec tempor ligula sapien in dolor. Ut congue consectetur nulla, quis tincidunt nibh tempus ac.
+                Pellentesque metus quam, dictum non nibh et, vestibulum vestibulum purus. Duis quis vulputate purus.
             </div>
         </div>
 
         <div class="bubblechat flex items-center justify-end">
-            <div class="w-2/3 lg:w-1/3 p-4 shadow my-3 border-gray-100 border-3 rounded-full  rounded-br-none">
+            <div class="w-2/3 lg:w-1/3 p-1 px-4 shadow my-3 border-gray-100 border-3 rounded-lg rounded-br-none">
+                chat 2
             </div>
         </div>
 
         <div class="bubblechat pink flex items-center justify-left">
-            <div class="w-2/3 lg:w-1/3 p-4 shadow my-3 border-gray-100 border-3 rounded-full  rounded-bl-none">
+            <div class="w-2/3 lg:w-1/3 p-1 px-4 shadow my-3 border-gray-100 border-3 rounded-lg rounded-bl-none">
+                chat 3
             </div>
         </div>
     </div>
 
     <div class="inputarea bg-white flex flex-row">
-        <div class="flex flex-row items-center">
-            <a href="javascript:;" class="px-1 text-2xl"><i class="fa fa-circle"></i></a>
-            <a href="javascript:;" class="px-1 text-2xl"><i class="fa fa-paperclip"></i></a>
+        <div class="flex flex-row items-center text-gray-600">
+            <a href="javascript:;" class="px-1 text-xl"><i class="fa fa-circle"></i></a>
+            <a href="javascript:;" class="px-1 text-xl"><i class="fa fa-paperclip"></i></a>
         </div>
 
         <textarea name="msg" required autocomplete="off" placeholder="baby ne thana thaya?"
