@@ -1,12 +1,15 @@
 from crypt import methods
 from flask import Flask
-from flask import request, redirect, session
+from flask import request, redirect, session, Response
 from flask import render_template
+from datetime import timedelta
 
 import hashlib
+from lib.redischat import chatclient
 
 app = Flask(__name__, static_folder="static", template_folder="templates")
 app.secret_key = "6*HT!99052y"
+app.permanent_session_lifetime = timedelta(days=1000)
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -34,3 +37,15 @@ def room(room_id):
     nick = session.get("nick", "Anonymous")
 
     return render_template("room.html", **locals())
+
+
+@app.route("/relay/<room_id>/", methods=["POST"])
+def relay(room_id):
+    nick = session.get("nick", None)
+    if nick is None:
+        return {}, 422
+
+    chatclient.send(
+        room_id,
+        nick,
+    )
