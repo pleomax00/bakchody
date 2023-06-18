@@ -54,7 +54,7 @@ var poller = function () {
         }
         var newLastChatId = $(".bubblechat:last").attr("x-chatid");
         if (data.length > 0 && lastChatId != newLastChatId) {
-            popSound();
+            popSound(firstPoll);
         }
         if (firstPoll) {
             firstPoll = false;
