@@ -21,5 +21,5 @@ deploy:
 	make down
 	make up
 
-deploy-remote:
+remote-deploy:
 	ssh ubuntu@129.154.238.56 "cd bakchody && make deploy"
