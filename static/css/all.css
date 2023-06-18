@@ -19,9 +19,11 @@ body {
 }
 
 .bubblechat > div {
-    background-color: rgb(96, 165, 250);
+    background-color: rgb(58, 125, 208);
+    color: white;
 }
 .pink > div {
-    background-color: rgb(240, 111, 214);
+    background-color: rgb(177, 72, 156);
+    color: white;
 }
 

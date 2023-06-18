@@ -8,3 +8,10 @@ up:
 	docker-compose up -d
 down:
 	docker-compose down
+
+bash:
+	docker exec -it bc bash
+
+redis-cli:
+	docker exec -it redis redis-cli
+

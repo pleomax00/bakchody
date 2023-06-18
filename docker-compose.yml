@@ -1,7 +1,26 @@
 version: "2.3"
 
 services:
-    
+
+    redis:
+        container_name: redis
+        image: redis:5.0.4
+        command: redis-server --maxmemory 2000M 
+        mem_limit: "2048M"
+        sysctls:
+          net.core.somaxconn: 4096
+        volumes:
+            - redisdata:/data
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "50m"
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+            interval: 5s
+            timeout: 5s
+            retries: 60
+
     bc:
         container_name: bc
         build: .
@@ -12,8 +31,15 @@ services:
             - MODE=PRODUCTION
         volumes:
             - ./:/app
+        depends_on:
+            redis:
+                condition: service_healthy
         logging:
             driver: "json-file"
             options:
                 max-size: "50m"
 
+volumes:
+  redisdata:
+    driver: local
+ 
