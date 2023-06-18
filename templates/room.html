@@ -10,7 +10,8 @@
     var room_id = "{{room_id}}";
 </script>
 
-<div class="alivenicks bg bg-white fixed w-full shadow-lg px-4 py-2 text-center font-bold bg-gradient-to-t from-gray-100 to-gray-300"">
+<div
+    class="alivenicks bg bg-white fixed w-full shadow-lg px-4 py-2 text-center font-bold bg-gradient-to-t from-gray-100 to-gray-300">
     {{nick}} <> ...
 </div>
 
@@ -18,7 +19,7 @@
     <div class="chat chatcontainer flex flex-col p-4 overflow-auto pt-10">
     </div>
 
-    <form class="chatinput inputarea bg-white flex flex-row" action="/relay/{{room_id}}/" method="POST">
+    <form class="chatinput inputarea bg-white flex flex-row m-0" action="/relay/{{room_id}}/" method="POST">
         <div class="flex flex-row items-center text-gray-600">
             <a href="javascript:;" class="px-1 text-xl"><i class="fa fa-circle"></i></a>
             <a href="javascript:;" class="px-1 text-xl"><i class="fa fa-paperclip"></i></a>
