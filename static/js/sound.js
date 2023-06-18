@@ -22,10 +22,12 @@ var popSound = function (firstPoll) {
         console.warn("Cannot play audio!");
     }
     var icon = "https://bakchody.app/static/images/favicon.png";
-    if (firstPoll == false) {
-        var notification = new Notification("New B@#$!", {
-            body: "...",
-            icon: icon,
-        });
+    if (firstPoll == true) {
+        return;
     }
+
+    var notification = new Notification("New B@#$!", {
+        body: "...",
+        icon: icon,
+    });
 };
