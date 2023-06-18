@@ -44,7 +44,7 @@ var poller = function () {
     if (!!$(".bubblechat:last").attr("x-chatid")) {
         lastChatId = $(".bubblechat:last").attr("x-chatid");
     }
-    $.get("./fetch/?from=" + lastChatId, function (res) {
+    $.get("./fetch/?from=" + lastChatId + "&_=" + new Date(), function (res) {
         var data = res["chats"];
         var nicks = res["nicks"];
         $(".alivenicks").html(nicks.join(" <> "));
