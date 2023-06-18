@@ -8,13 +8,24 @@ $(document).ready(function () {
     audioElement.addEventListener("canplay", function () {
         canPlay = true;
     });
+
+    Notification.requestPermission().then(function (permission) {
+        console.log(permission);
+    });
 });
 
-var popSound = function () {
+var popSound = function (firstPoll) {
     if (canPlay) {
         console.log("Pop!");
         audioElement.play();
     } else {
         console.warn("Cannot play audio!");
+    }
+    var icon = "https://bakchody.app/static/images/favicon.png";
+    if (firstPoll == false) {
+        var notification = new Notification("New B@#$!", {
+            body: "...",
+            icon: icon,
+        });
     }
 };
