@@ -15,3 +15,8 @@ bash:
 redis-cli:
 	docker exec -it redis redis-cli
 
+deploy:
+	git pull
+	make build
+	make down
+	make up
