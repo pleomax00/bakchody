@@ -9,9 +9,11 @@ var poller = function () {
     $.get("./fetch/?from=" + lastChatId + "&_=" + new Date(), function (res) {
         var data = res["chats"];
         var nicks = res["nicks"];
-        $(".alivenicks").html(
-            "<i class='fa-regular fa-comments'></i> " + nicks.join(" <> ")
-        );
+        if (nicks.length > 0) {
+            $(".alivenicks").html(
+                "<i class='fa-regular fa-comments'></i> " + nicks.join(" <> ")
+            );
+        }
 
         var otherChatCount = 0;
         for (var i = 0; i < data.length; i++) {
