@@ -128,7 +128,6 @@ def on_alive(data):
 
 @socketio.on("markopen")
 def on_open(data):
-    print("Opening..", data)
     nick = session.get("nick", "").strip()
     room_id = data.get("room_id", "").strip()
     message_id = data.get("id", "").strip()
