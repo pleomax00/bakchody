@@ -1,4 +1,68 @@
 $.fn.chatBubble = function () {};
+var firstPoll = true;
+
+var poller = function () {
+    var lastChatId = "0";
+    if (!!$(".bubblechat:last").attr("x-chatid")) {
+        lastChatId = $(".bubblechat:last").attr("x-chatid");
+    }
+    $.get("./fetch/?from=" + lastChatId + "&_=" + new Date(), function (res) {
+        var data = res["chats"];
+        var nicks = res["nicks"];
+        $(".alivenicks").html(
+            "<i class='fa-regular fa-comments'></i> " + nicks.join(" <> ")
+        );
+
+        var otherChatCount = 0;
+        for (var i = 0; i < data.length; i++) {
+            var markup = data[i][0];
+            var rawChat = data[i][1];
+            var chatId = rawChat["id"];
+            if ($("[x-chatid=" + chatId + "]").length) {
+                console.warn("Already in the DOM!");
+                continue;
+            }
+
+            renderSingleChat(markup);
+            if (rawChat["from"] != nick) {
+                console.log(rawChat["from"], nick);
+                otherChatCount++;
+            }
+        }
+        var newLastChatId = $(".bubblechat:last").attr("x-chatid");
+        if (firstPoll) {
+            firstPoll = false;
+            $(".chatcontainer").append(
+                "<p class='text-center my-4 py-2 text-yellow-50 text-xs'><i class='fa fa-lock'></i> Messages are end-to-end encrypted. No one outside of this chat, not even the application can read the messages. Encrypted messages are also purged 30 mins after being read.</p>"
+            );
+        } else {
+            if (otherChatCount > 0) {
+                popSound();
+            }
+        }
+    });
+};
+var renderSingleChat = function (markup, viaSelf) {
+    if (typeof viaSelf == "undefined") {
+        viaSelf = false;
+    }
+    console.log("Rendering.. ownmessage?", viaSelf);
+
+    $(".chatcontainer").append(markup);
+    var lastEntry = $(".bubblechat:last");
+    var epoch = lastEntry.find(".ts").attr("x-epoch");
+    var ts = moment.unix(epoch).tz("Asia/Kolkata").format("DD-MM-YYYY hh:ss A");
+    var dateString = moment.unix(epoch).tz("Asia/Kolkata").fromNow();
+    lastEntry.find(".ts").html(dateString).attr("title", ts);
+    var crypto = new SimpleCrypto(room_id);
+    var decrypted = crypto.decrypt(lastEntry.find("script").html());
+    lastEntry.find(".decrypted").html(decrypted);
+
+    var scroll = $(".chatcontainer");
+    setTimeout(function () {
+        scroll.scrollTop(scroll.prop("scrollHeight"));
+    }, 100);
+};
 
 $(document).ready(function () {
     $(".chatinput").submitableForm(function (data) {
@@ -24,7 +88,6 @@ $(document).ready(function () {
         return false;
     });
 
-    setInterval(poller, 2000);
     poller();
     $(".chatwriter").focus();
 
@@ -35,53 +98,47 @@ $(document).ready(function () {
             $(this).find(".ts").html(dateString);
         });
     }, 1000);
+
+    $(document).focus(function () {
+        console.log("Focused!");
+        $(".bubblechat").each(function () {
+            if ($(this).attr("x-from") == nick) {
+                return;
+            }
+            if ($(this).hasClass("markopened")) {
+                return;
+            }
+            var messageId = $(this).attr("x-chatid");
+            console.log("Sending open reciept for:", messageId);
+            socket.emit("markopen", { room_id: room_id, id: messageId });
+            $(this).addClass("markopened");
+        });
+    });
+
+    $(".stoggle").click(function () {
+        var name = $(this).attr("x-name");
+        var currentValue = $(this).attr("x-value");
+        var newValue;
+        if (currentValue == "on") {
+            newValue = "off";
+        } else {
+            newValue = "on";
+        }
+        var oldClasses = $(this).attr("x-" + currentValue);
+        var newClasses = $(this).attr("x-" + newValue);
+        console.log(oldClasses, newValue, newClasses);
+        $(this).find("i").removeClass(oldClasses).addClass(newClasses);
+        $(this).attr("x-value", newValue);
+        settings[name] = newValue;
+        $.post("/set/" + name + "/" + newValue + "/");
+    });
 });
 
-var firstPoll = true;
-
-var poller = function () {
-    var lastChatId = "0";
-    if (!!$(".bubblechat:last").attr("x-chatid")) {
-        lastChatId = $(".bubblechat:last").attr("x-chatid");
+var doMarkRead = function (ids) {
+    for (var i = 0; i < ids.length; i++) {
+        var readId = ids[i];
+        $("i[x-read-id=" + readId + "]")
+            .removeClass("fa-check")
+            .addClass("fa-check-double");
     }
-    $.get("./fetch/?from=" + lastChatId + "&_=" + new Date(), function (res) {
-        var data = res["chats"];
-        var nicks = res["nicks"];
-        $(".alivenicks").html(nicks.join(" <> "));
-
-        for (var i = 0; i < data.length; i++) {
-            renderSingleChat(data[i]);
-        }
-        var newLastChatId = $(".bubblechat:last").attr("x-chatid");
-        if (data.length > 0 && lastChatId != newLastChatId) {
-            popSound(firstPoll);
-        }
-        if (firstPoll) {
-            firstPoll = false;
-            $(".chatcontainer").append(
-                "<p class='text-center my-4 py-2 text-yellow-50 text-xs'><i class='fa fa-lock'></i> Messages are end-to-end encrypted. No one outside of this chat, not even the application can read the messages. Encrypted messages are also purged after 15 mins.</p>"
-            );
-        }
-    });
-};
-var renderSingleChat = function (markup, viaSelf) {
-    if (typeof viaSelf == "undefined") {
-        viaSelf = false;
-    }
-    console.log("Rendering.. ownmessage?", viaSelf);
-
-    $(".chatcontainer").append(markup);
-    var lastEntry = $(".bubblechat:last");
-    var epoch = lastEntry.find(".ts").attr("x-epoch");
-    var ts = moment.unix(epoch).tz("Asia/Kolkata").format("DD-MM-YYYY hh:ss A");
-    var dateString = moment.unix(epoch).tz("Asia/Kolkata").fromNow();
-    lastEntry.find(".ts").html(dateString).attr("title", ts);
-    var crypto = new SimpleCrypto(room_id);
-    var decrypted = crypto.decrypt(lastEntry.find("script").html());
-    lastEntry.find(".decrypted").html(decrypted);
-
-    var scroll = $(".chatcontainer");
-    setTimeout(function () {
-        scroll.scrollTop(scroll.prop("scrollHeight"));
-    }, 100);
 };

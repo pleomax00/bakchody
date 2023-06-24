@@ -1,10 +1,16 @@
 <div class="bubblechat {% if chat.from != nick %}pink justify-left{% else %}justify-end{% endif %} flex items-center"
-    x-chatid="{{chat.id}}">
+    x-chatid="{{chat.id}}" x-from="{{chat.from}}">
     <div
         class="flex flex-col w-2/3 lg:w-1/3 p-2 px-4 shadow my-2 border-gray-100 border-3 rounded-lg {% if chat.from != nick %}rounded-bl-none{% else %}rounded-br-none{% endif %}">
         <script type="text/enc">{{ chat.msg }}</script>
         <p class="decrypted pt-1" style="white-space: pre-line; word-break: break-all;"></p>
-        <p class="text-white text-right" style="top: -27px; right: 29px; font-size: 75%;">{{chat.from}},
-            <span class="ts" x-epoch="{{chat.timestamp}}">{{chat.timestamp}}</span></p>
+        <p class="text-white text-right" style="top: -27px; right: 29px; font-size: 75%;">
+            <span>{{chat.from}},</span>
+            <span class="ts" x-epoch="{{chat.timestamp}}">{{chat.timestamp}}</span>
+            {% if chat.from == nick %}
+            <i x-read-id="{{chat.id}}"
+                class="tripletick fa-solid {% if chat.read %}fa-check-double{% else %}fa-check{% endif %} {%if chat.open %}text-yellow-500{% endif %}"></i>
+            {% endif %}
+        </p>
     </div>
 </div>

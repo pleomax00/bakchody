@@ -15,19 +15,25 @@ $(document).ready(function () {
 });
 
 var popSound = function (firstPoll) {
-    if (canPlay) {
-        console.log("Pop!");
-        audioElement.play();
-    } else {
-        console.warn("Cannot play audio!");
+    if (settings["s_notification"] == "off") {
+        return;
     }
-    var icon = "https://bakchody.app/static/images/favicon.png";
     if (firstPoll == true) {
         return;
     }
 
-    var notification = new Notification("New B@#$!", {
-        body: "...",
-        icon: icon,
-    });
+    if (document.hasFocus()) {
+        if (canPlay) {
+            console.log("Pop!");
+            audioElement.play();
+        } else {
+            console.warn("Cannot play audio!");
+        }
+    } else {
+        var icon = "https://bakchody.app/static/images/favicon.png";
+        var notification = new Notification("New B@#$!", {
+            body: "...",
+            icon: icon,
+        });
+    }
 };

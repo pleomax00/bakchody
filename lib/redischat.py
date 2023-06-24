@@ -1,7 +1,9 @@
 REDIS_HOST = "redis"
 REDIS_PORT = 6379
+EXPIRY = 30 * 60
 
 import datetime
+from os import read
 import time
 import redis
 import json
@@ -12,7 +14,7 @@ class RedisChat:
         self.redis = redis.Redis(host=hostname, port=port)
 
     def alive(self, nick, room_id):
-        self.redis.set(f"_NICK_{room_id}_{nick}_", nick, 5)
+        self.redis.set(f"_NICK_{room_id}_{nick}_", nick, 4)
 
     def get_live_users(self, room_id):
         alive_nicks = []
@@ -35,7 +37,6 @@ class RedisChat:
         self.redis.set(
             f"_CHAT_{room_id}_{chat_id}_",
             json.dumps(chatobj),
-            ex=15 * 60,
         )
         return chatobj
 
@@ -65,6 +66,30 @@ class RedisChat:
             result.append(obj)
 
         return result
+
+    def markread(self, room_id, message_ids, by_nick, xkey="read"):
+        vals = {}
+        keys = list(map(lambda x: f"_CHAT_{room_id}_{x}_", message_ids))
+        res = self.redis.mget(keys)
+        pipe = self.redis.pipeline()
+
+        for thiskey, chat in zip(keys, res):
+            if chat is None:
+                continue
+            obj = json.loads(chat)
+            obj[xkey] = True
+            if xkey + "_by" in obj:
+                obj[xkey + "_by"].append(by_nick)
+            else:
+                obj[xkey + "_by"] = [by_nick]
+            obj[xkey + "_by"] = list(set(obj[xkey + "_by"]))
+            pipe.set(thiskey, json.dumps(obj))
+
+            if xkey == "open":
+                # Delete the key from server permanently after EXPIRY
+                pipe.expire(thiskey, EXPIRY)
+
+        pipe.execute()
 
 
 chatclient = RedisChat(REDIS_HOST, REDIS_PORT)
