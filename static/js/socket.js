@@ -31,6 +31,21 @@ var MessageProcessor = function () {
         console.log("Marking open:", data);
         bubble.find(".tripletick").addClass("text-yellow-500");
     };
+
+    var intervalId = null;
+    this.on_typing = function (data) {
+        if (data.nick == nick) {
+            return;
+        }
+        console.log("Typing.. " + data.nick);
+        $(".typingindicator").html("typing..");
+        if (intervalId != null) {
+            clearInterval(intervalId);
+        }
+        intervalId = setInterval(function () {
+            $(".typingindicator").html("");
+        }, 2500);
+    };
 };
 var processor = new MessageProcessor();
 

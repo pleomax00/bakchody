@@ -37,6 +37,7 @@ var poller = function () {
             $(".chatcontainer").append(
                 "<p class='text-center my-4 py-2 text-yellow-50 text-xs'><i class='fa fa-lock'></i> Messages are end-to-end encrypted. No one outside of this chat, not even the application can read the messages. Encrypted messages are also purged 30 mins after being read.</p>"
             );
+            onWindowFocus.call(window);
         } else {
             if (otherChatCount > 0) {
                 popSound();
@@ -44,6 +45,23 @@ var poller = function () {
         }
     });
 };
+
+var onWindowFocus = function () {
+    console.log("Focused!");
+    $(".bubblechat").each(function () {
+        if ($(this).attr("x-from") == nick) {
+            return;
+        }
+        if ($(this).hasClass("markopened")) {
+            return;
+        }
+        var messageId = $(this).attr("x-chatid");
+        console.log("Sending open reciept for:", messageId);
+        socket.emit("markopen", { room_id: room_id, id: messageId });
+        $(this).addClass("markopened");
+    });
+};
+
 var renderSingleChat = function (markup, viaSelf) {
     if (typeof viaSelf == "undefined") {
         viaSelf = false;
@@ -66,6 +84,9 @@ var renderSingleChat = function (markup, viaSelf) {
     }, 100);
 };
 
+var typingTTL = 2;
+var lastTyped = null;
+
 $(document).ready(function () {
     $(".chatinput").submitableForm(function (data) {
         console.log("message sent..");
@@ -75,6 +96,13 @@ $(document).ready(function () {
 
     $(".chatinput").on("keypress", function (e) {
         if (e.keyCode != 13) {
+            var now = new Date().getTime() / 1000;
+            console.log(lastTyped, now, now - lastTyped);
+            if (lastTyped == null || now - lastTyped > typingTTL) {
+                console.log("Sending Typing");
+                lastTyped = now;
+                socket.emit("typing", { room_id: room_id });
+            }
             return;
         }
         if (e.shiftKey == true) {
@@ -101,21 +129,7 @@ $(document).ready(function () {
         });
     }, 1000);
 
-    $(window).focus(function () {
-        console.log("Focused!");
-        $(".bubblechat").each(function () {
-            if ($(this).attr("x-from") == nick) {
-                return;
-            }
-            if ($(this).hasClass("markopened")) {
-                return;
-            }
-            var messageId = $(this).attr("x-chatid");
-            console.log("Sending open reciept for:", messageId);
-            socket.emit("markopen", { room_id: room_id, id: messageId });
-            $(this).addClass("markopened");
-        });
-    });
+    $(window).focus(onWindowFocus);
 
     $(".stoggle").click(function () {
         var name = $(this).attr("x-name");

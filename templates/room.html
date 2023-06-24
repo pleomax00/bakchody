@@ -6,6 +6,11 @@
 {% block title %}Chat{% endblock %}
 
 {% block maincontent %}
+<script src="/static/js/sound.js?_={{version}}"></script>
+<script src="/static/js/autosave.js?_={{version}}"></script>
+<script src="/static/js/socket.js?_={{version}}"></script>
+<script src="/static/js/chat.js?_={{version}}"></script>
+
 <script>
     var room_id = "{{room_id}}";
     var nick = "{{nick}}";
@@ -19,6 +24,8 @@
     </div>
     <div class="grow alivenicks">
         {{nick}} <> ...
+    </div>
+    <div class="typingindicator text-sm self-center w-24 mr-4">
     </div>
     <div class="text-xl self-center w-6">
         {% if settings["s_notification"] == "on" %}

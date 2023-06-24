@@ -20,7 +20,7 @@ socketio = SocketIO(app)
 
 @app.context_processor
 def inject_config():
-    return dict(version="0.5")
+    return dict(version="0.6")
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -140,6 +140,13 @@ def on_open(data):
 
     chatclient.markread(room_id, [message_id], nick, xkey="open")
     socketio.send({"action": "markopen", "id": message_id}, to=room_id)
+
+
+@socketio.on("typing")
+def on_typing(data):
+    nick = session.get("nick", "").strip()
+    room_id = data.get("room_id")
+    socketio.send({"action": "typing", "nick": nick}, to=room_id)
 
 
 if __name__ == "__main__":
