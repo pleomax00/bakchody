@@ -20,7 +20,7 @@ socketio = SocketIO(app)
 
 @app.context_processor
 def inject_config():
-    return dict(version="0.6")
+    return dict(version="0.7")
 
 
 @app.route("/", methods=["GET", "POST"])
