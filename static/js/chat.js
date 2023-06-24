@@ -43,6 +43,7 @@ var poller = function () {
                 popSound();
             }
         }
+        $(".typingindicator").html("");
     });
 };
 
@@ -62,11 +63,14 @@ var onWindowFocus = function () {
     });
 };
 
+const regex =
+    /^[\p{Extended_Pictographic}\u{1F3FB}-\u{1F3FF}\u{1F9B0}-\u{1F9B3}]{1,5}$/u;
+
 var renderSingleChat = function (markup, viaSelf) {
     if (typeof viaSelf == "undefined") {
         viaSelf = false;
     }
-    console.log("Rendering.. ownmessage?", viaSelf);
+    //console.log("Rendering.. ownmessage?", viaSelf, markup);
 
     $(".chatcontainer").append(markup);
     var lastEntry = $(".bubblechat:last");
@@ -78,10 +82,20 @@ var renderSingleChat = function (markup, viaSelf) {
     var decrypted = crypto.decrypt(lastEntry.find("script").html());
     lastEntry.find(".decrypted").html(decrypted);
 
+    var rawMsg = lastEntry.find(".decrypted").html();
+    if ((rawMsg, regex.test(rawMsg))) {
+        /* Its an empty emoji */
+        lastEntry.find(".decrypted").addClass("text-4xl");
+    }
+
     var scroll = $(".chatcontainer");
     setTimeout(function () {
         scroll.scrollTop(scroll.prop("scrollHeight"));
     }, 100);
+
+    if (document.hasFocus()) {
+        onWindowFocus.call(window);
+    }
 };
 
 var typingTTL = 2;

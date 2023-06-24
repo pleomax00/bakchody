@@ -6,6 +6,8 @@
 {% block title %}Chat{% endblock %}
 
 {% block maincontent %}
+<script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
+
 <script src="/static/js/sound.js?_={{version}}"></script>
 <script src="/static/js/autosave.js?_={{version}}"></script>
 <script src="/static/js/socket.js?_={{version}}"></script>
@@ -43,8 +45,8 @@
     </div>
 
     <form class="chatinput inputarea bg-white flex flex-row m-0" action="/relay/{{room_id}}/" method="POST">
-        <div class="flex flex-row items-center text-gray-600">
-            <a href="javascript:;" class="px-1 text-xl"><i class="fa fa-circle"></i></a>
+        <div class="flex flex-row items-center text-gray-600 gap-2">
+            <a href="javascript:;" class="px-1 text-xl"><i class="fa-sharp fa-regular fa-face-smile"></i></a>
             <a href="javascript:;" class="px-1 text-xl"><i class="fa fa-paperclip"></i></a>
         </div>
 
@@ -54,6 +56,7 @@
         <button type="submit" class="btn btn-success cursor-pointer bg-blue-400 w-24 text-white text-center">
             <i class="fa fa-paper-plane fa-lg "></i>
         </button>
+
     </form>
 
 </div>
