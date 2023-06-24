@@ -45,15 +45,16 @@
     </div>
 
     <form class="chatinput inputarea bg-white flex flex-row m-0" action="/relay/{{room_id}}/" method="POST">
-        <div class="flex flex-row items-center text-gray-600 gap-2">
-            <a href="javascript:;" class="px-1 text-xl"><i class="fa-sharp fa-regular fa-face-smile"></i></a>
+        <div class="flex flex-row items-center text-gray-600 gap-1">
+            <a href="javascript:;" class="px-1 pl-2 text-xl"><i class="fa-sharp fa-regular fa-face-smile"></i></a>
             <a href="javascript:;" class="px-1 text-xl"><i class="fa fa-paperclip"></i></a>
         </div>
 
         <textarea name="msg" required autocomplete="off" placeholder="baby ne thana thaya?"
             class="chatwriter focus:outline-none text-left w-full h-12 mt-2 px-4"
             style="line-height: 20px">{{roomid}}</textarea>
-        <button type="submit" class="btn btn-success cursor-pointer bg-blue-400 w-24 text-white text-center">
+        <button type="submit"
+            class="btn btn-success cursor-pointer bg-gray-400 hover:bg-gray-500 w-24 text-white text-center border-t border-t-gray-400 hover:border-t-gray-500">
             <i class="fa fa-paper-plane fa-lg "></i>
         </button>
 
