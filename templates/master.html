@@ -8,7 +8,6 @@
     <title>{% block title %}{% endblock %} · Bakchody</title>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!--script src="/static/js/jquery.timeago.js"></script-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.43/moment-timezone-with-data-1970-2030.min.js">
@@ -16,10 +15,10 @@
     <script src="http://cdn.jsdelivr.net/npm/simple-crypto-js@2.5.0/dist/SimpleCrypto.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
 
-    <script src="/static/js/sound.js?_=0.3"></script>
-    <script src="/static/js/autosave.js?_=0.3"></script>
-    <script src="/static/js/socket.js?_=0.3"></script>
-    <script src="/static/js/chat.js?_=0.3"></script>
+    <script src="/static/js/sound.js?_={{version}}"></script>
+    <script src="/static/js/autosave.js?_={{version}}"></script>
+    <script src="/static/js/socket.js?_={{version}}"></script>
+    <script src="/static/js/chat.js?_={{version}}"></script>
 
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -28,10 +27,10 @@
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.4.0/css/sharp-regular.css">
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.4.0/css/sharp-light.css">
 
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.1.0/github-markdown-light.css" />
+    <!--link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.1.0/github-markdown-light.css" /-->
 
-    <link rel="stylesheet" href="/static/css/all.css?_=0.3">
+    <link rel="stylesheet" href="/static/css/all.css?_={{version}}">
     {% block extraheaders %}{% endblock %}
 </head>
 

@@ -99,7 +99,7 @@ $(document).ready(function () {
         });
     }, 1000);
 
-    $(document).focus(function () {
+    $(window).focus(function () {
         console.log("Focused!");
         $(".bubblechat").each(function () {
             if ($(this).attr("x-from") == nick) {

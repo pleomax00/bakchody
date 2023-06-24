@@ -14,7 +14,13 @@ from lib.redischat import chatclient
 app = Flask(__name__, static_folder="static", template_folder="templates")
 app.secret_key = "6*HT!99052y"
 app.permanent_session_lifetime = timedelta(days=1000)
+
 socketio = SocketIO(app)
+
+
+@app.context_processor
+def inject_config():
+    return dict(version="0.4")
 
 
 @app.route("/", methods=["GET", "POST"])
