@@ -22,7 +22,7 @@
 <div
     class="bg bg-white fixed w-full shadow-lg px-4 py-3 bg-gradient-to-t from-gray-100 to-gray-300 text-lg text-center font-bold flex">
     <div class="text-xl self-center">
-        <i class="fa-regular fa-face-swear"></i>
+        <a href="/"><i class="fa-regular fa-face-swear"></i></a>
     </div>
     <div class="grow alivenicks">
         {{nick}} <> ...
@@ -31,11 +31,13 @@
     </div>
     <div class="text-xl self-center w-6">
         {% if settings["s_notification"] == "on" %}
-        <a href="javascript:;" class="stoggle" x-name="s_notification" x-value="{{settings["s_notification"]}}"
-            x-on="fa-solid fa-bell-on" x-off="fa-regular fa-bell"><i class="fa-solid fa-bell-on"></i></a>
+        <a href="javascript:;" class="stoggle hover:text-gray-600" x-name="s_notification"
+            x-value="{{settings["s_notification"]}}" x-on="fa-solid fa-bell-on" x-off="fa-regular fa-bell"><i
+                class="fa-solid fa-bell-on"></i></a>
         {% else %}
-        <a href="javascript:;" class="stoggle" x-name="s_notification" x-value="{{settings["s_notification"]}}"
-            x-on="fa-solid fa-bell-on" x-off="fa-regular fa-bell"><i class="fa-regular fa-bell"></i></a>
+        <a href="javascript:;" class="stoggle hover:text-gray-600" x-name="s_notification"
+            x-value="{{settings["s_notification"]}}" x-on="fa-solid fa-bell-on" x-off="fa-regular fa-bell"><i
+                class="fa-regular fa-bell"></i></a>
         {% endif %}
     </div>
 </div>

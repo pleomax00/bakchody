@@ -111,9 +111,7 @@ $(document).ready(function () {
     $(".chatinput").on("keypress", function (e) {
         if (e.keyCode != 13) {
             var now = new Date().getTime() / 1000;
-            console.log(lastTyped, now, now - lastTyped);
             if (lastTyped == null || now - lastTyped > typingTTL) {
-                console.log("Sending Typing");
                 lastTyped = now;
                 socket.emit("typing", { room_id: room_id });
             }
@@ -156,7 +154,6 @@ $(document).ready(function () {
         }
         var oldClasses = $(this).attr("x-" + currentValue);
         var newClasses = $(this).attr("x-" + newValue);
-        console.log(oldClasses, newValue, newClasses);
         $(this).find("i").removeClass(oldClasses).addClass(newClasses);
         $(this).attr("x-value", newValue);
         settings[name] = newValue;
