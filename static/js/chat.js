@@ -79,8 +79,12 @@ var renderSingleChat = function (markup, viaSelf) {
     var dateString = moment.unix(epoch).tz("Asia/Kolkata").fromNow();
     lastEntry.find(".ts").html(dateString).attr("title", ts);
     var crypto = new SimpleCrypto(room_id);
-    var decrypted = crypto.decrypt(lastEntry.find("script").html());
-    lastEntry.find(".decrypted").html(decrypted);
+
+    var cipheredMsg = lastEntry.find("script").html();
+    if (cipheredMsg != "__image__") {
+        var decrypted = crypto.decrypt(cipheredMsg);
+        lastEntry.find(".decrypted").html(decrypted);
+    }
 
     var rawMsg = lastEntry.find(".decrypted").html();
     if ((rawMsg, regex.test(rawMsg))) {

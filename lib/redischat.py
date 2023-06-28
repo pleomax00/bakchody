@@ -7,6 +7,7 @@ from os import read
 import time
 import redis
 import json
+import base64
 
 
 class RedisChat:
@@ -23,7 +24,7 @@ class RedisChat:
         alive_nicks = self.redis.mget(alive_nicks)
         return list(map(lambda x: x.decode(), alive_nicks))
 
-    def send(self, room_id, from_user, msg):
+    def send(self, room_id, from_user, msg, img=None):
         chat_id = self.redis.incr(f"_CTR_{room_id}_")
         chat_id = str(chat_id).rjust(8, "0")
 
@@ -33,6 +34,9 @@ class RedisChat:
             "id": chat_id,
             "timestamp": int(time.time()),
         }
+        if img != None:
+            img = base64.b64encode(img)
+            chatobj["img"] = img.decode()
 
         self.redis.set(
             f"_CHAT_{room_id}_{chat_id}_",

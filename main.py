@@ -1,5 +1,6 @@
 from crypt import methods
 from tkinter import W
+import uuid
 from flask import Flask
 from flask import request, redirect, session, Response
 from flask import render_template_string
@@ -7,12 +8,14 @@ from flask import render_template
 from flask_socketio import SocketIO, join_room, send, emit, rooms
 from datetime import timedelta
 import json
+from PIL import Image
+import io
 
 import hashlib
 from lib.redischat import chatclient
 
 app = Flask(__name__, static_folder="static", template_folder="templates")
-app.secret_key = "6*HT!99052y"
+app.secret_key = "h&ra_y-9j_(5-e%49jiu!=@io4@^sr&s#&5glnwo!7*kzv(hj="
 app.permanent_session_lifetime = timedelta(days=1000)
 
 socketio = SocketIO(app)
@@ -20,7 +23,7 @@ socketio = SocketIO(app)
 
 @app.context_processor
 def inject_config():
-    return dict(version="0.8")
+    return dict(version="0.9")
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -101,6 +104,28 @@ def relay(room_id):
 
     markup = render_template("partials/bubble.html", **locals())
     return {"status": "success", "markup": markup}, 200
+
+
+@app.route("/upload/<room_id>/", methods=["POST"])
+def upload(room_id):
+    nick = session.get("nick", "").strip()
+    if nick == "":
+        return {}, 422
+
+    print(request.files)
+    img = Image.open(request.files["file"].stream)
+    img.thumbnail((1000, 1000))
+
+    contents = None
+    with io.BytesIO() as output:
+        img.save(output, format="PNG")
+        contents = output.getvalue()
+
+    chat = chatclient.send(room_id, nick, "__image__", img=contents)
+    socketio.send({"action": "incoming", "from": nick}, to=room_id)
+
+    markup = render_template("partials/bubble.html", **locals())
+    return {}
 
 
 @socketio.on("join")

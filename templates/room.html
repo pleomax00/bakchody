@@ -12,6 +12,7 @@
 <script src="/static/js/autosave.js?_={{version}}"></script>
 <script src="/static/js/socket.js?_={{version}}"></script>
 <script src="/static/js/chat.js?_={{version}}"></script>
+<script src="/static/js/upload.js?_={{version}}"></script>
 
 <script>
     var room_id = "{{room_id}}";
@@ -42,14 +43,14 @@
     </div>
 </div>
 
-<div class=" allchat flex h-full flex-col justify-end">
+<div class=" allchat flex h-full flex-col justify-end border-2">
     <div class="chat chatcontainer flex flex-col p-4 overflow-auto pt-14">
     </div>
 
     <form class="chatinput inputarea bg-white flex flex-row m-0" action="/relay/{{room_id}}/" method="POST">
         <div class="flex flex-row items-center text-gray-600 gap-1">
             <a href="javascript:;" class="px-1 pl-2 text-xl"><i class="fa-sharp fa-regular fa-face-smile"></i></a>
-            <a href="javascript:;" class="px-1 text-xl"><i class="fa fa-paperclip"></i></a>
+            <a href="javascript:;" class="px-1 text-xl hover:text-gray-600"><i class="fa fa-paperclip"></i></a>
         </div>
 
         <textarea name="msg" required autocomplete="off" placeholder="baby ne thana thaya?"
