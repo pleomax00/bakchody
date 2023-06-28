@@ -55,4 +55,6 @@ $(document).ready(function () {
             uploadFile(e.originalEvent.dataTransfer.files);
         }
     });
+
+    $(".uploadbtn").click(function () {});
 });
