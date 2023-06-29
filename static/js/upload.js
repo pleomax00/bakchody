@@ -1,9 +1,14 @@
-var supportedImageTypes = ["image/png", "image/jpeg"];
+var supportedImageTypes = [
+    "image/png",
+    "image/jpeg",
+    "image/jpg",
+    "image/heic",
+];
 
 var uploadFile = function (files) {
     var f = files[0];
     console.log(f.type);
-    if (supportedImageTypes.indexOf(f.type)) {
+    if (supportedImageTypes.indexOf(f.type) == -1) {
         alert("Can upload images only for now.");
         return false;
     }

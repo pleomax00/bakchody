@@ -14,6 +14,10 @@ import io
 import hashlib
 from lib.redischat import chatclient
 
+from pillow_heif import register_heif_opener
+
+register_heif_opener()
+
 app = Flask(__name__, static_folder="static", template_folder="templates")
 app.secret_key = "h&ra_y-9j_(5-e%49jiu!=@io4@^sr&s#&5glnwo!7*kzv(hj="
 app.permanent_session_lifetime = timedelta(days=1000)
