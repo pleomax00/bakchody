@@ -87,7 +87,7 @@ class RedisChat:
             else:
                 obj[xkey + "_by"] = [by_nick]
             obj[xkey + "_by"] = list(set(obj[xkey + "_by"]))
-            pipe.set(thiskey, json.dumps(obj))
+            pipe.set(thiskey, json.dumps(obj), keepttl=True)
 
             if xkey == "open":
                 # Delete the key from server permanently after EXPIRY
