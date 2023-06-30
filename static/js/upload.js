@@ -7,6 +7,7 @@ var supportedImageTypes = [
 
 var uploadFile = function (files) {
     var f = files[0];
+    $(".spinner").removeClass("hidden");
     console.log(f.type);
     if (supportedImageTypes.indexOf(f.type) == -1) {
         alert("Can upload images only for now.");
@@ -25,8 +26,10 @@ var uploadFile = function (files) {
             //do_something(data) ;
             console.log(data);
             poller();
+            $(".spinner").addClass("hidden");
         },
         error: function (data) {
+            $(".spinner").addClass("hidden");
             console.log("Error in uploading!");
         },
     });
@@ -61,5 +64,13 @@ $(document).ready(function () {
         }
     });
 
-    $(".uploadbtn").click(function () {});
+    $("#fileinput").change(function (e) {
+        var fd = new FormData();
+        var files = $(this)[0].files;
+        uploadFile(files);
+    });
+
+    $(".uploadbtn").click(function () {
+        $("#fileinput").trigger("click");
+    });
 });

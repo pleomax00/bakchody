@@ -6,6 +6,12 @@
 {% block title %}Chat{% endblock %}
 
 {% block maincontent %}
+
+<div class="spinner hidden fixed w-full h-full z-30 text-center">
+    <div class="spin-background fixed w-full h-full bg-white opacity-80 z-40"></div>
+    <i class="fa-duotone fa-spinner-third fa-spin text-9xl z-50" style="top: 40%;"></i>
+</div>
+
 <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
 
 <script src="/static/js/sound.js?_={{version}}"></script>
@@ -48,6 +54,8 @@
     </div>
 
     <form class="chatinput inputarea bg-white flex flex-row m-0" action="/relay/{{room_id}}/" method="POST">
+        <input type="file" id="fileinput" class="hidden" />
+
         <div class="flex flex-row items-center text-gray-600 gap-1">
             <a href="javascript:;" class="px-1 pl-2 text-xl"><i class="fa-sharp fa-regular fa-face-smile"></i></a>
             <a href="javascript:;" class="uploadbtn px-1 text-xl hover:text-gray-600"><i
