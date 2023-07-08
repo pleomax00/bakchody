@@ -40,7 +40,7 @@ def index():
         roomid = request.form.get("room", None)
         nick = request.form.get("nick", None)
         nick = nick.strip()
-        roomid = roomid.strip()
+        roomid = roomid.strip().lower()
         if nick is not None:
             session["nick"] = nick
             session["roomid"] = roomid
