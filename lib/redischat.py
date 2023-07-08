@@ -6,6 +6,7 @@ import datetime
 from os import read
 import time
 import redis
+import random
 import json
 import base64
 
@@ -71,7 +72,7 @@ class RedisChat:
 
         return result
 
-    def markread(self, room_id, message_ids, by_nick, xkey="read"):
+    def markread_with_redlock(self, room_id, message_ids, by_nick, xkey):
         vals = {}
         keys = list(map(lambda x: f"_CHAT_{room_id}_{x}_", message_ids))
         res = self.redis.mget(keys)
@@ -94,6 +95,13 @@ class RedisChat:
                 pipe.expire(thiskey, EXPIRY)
 
         pipe.execute()
+
+    def markread(self, room_id, message_ids, by_nick, xkey="read"):
+        lock_name = f"_LOCK_{room_id}_{by_nick}_"
+        lock = self.redis.lock(lock_name, blocking=True, blocking_timeout=5)
+        lock.acquire()
+        self.markread_with_redlock(room_id, message_ids, by_nick, xkey)
+        lock.release()
 
 
 chatclient = RedisChat(REDIS_HOST, REDIS_PORT)
