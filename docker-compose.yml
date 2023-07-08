@@ -4,7 +4,7 @@ services:
 
     redis:
         container_name: redis
-        image: redis:5.0.4
+        image: redis:7.0
         command: redis-server --maxmemory 2000M 
         mem_limit: "2048M"
         sysctls:
