@@ -12,8 +12,8 @@
     <i class="fa-duotone fa-spinner-third fa-spin text-9xl z-50" style="top: 40%;"></i>
 </div>
 
-<script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
-
+<script src="/static/js/emojidata.js?_={{version}}"></script>
+<script src="/static/js/autocomplete.js?_={{version}}"></script>
 <script src="/static/js/sound.js?_={{version}}"></script>
 <script src="/static/js/autosave.js?_={{version}}"></script>
 <script src="/static/js/socket.js?_={{version}}"></script>
@@ -32,7 +32,7 @@
         <a href="/"><i class="fa-regular fa-face-swear"></i></a>
     </div>
     <div class="grow alivenicks">
-        {{nick}} <> ...
+        {{nick}} <> ... &#;
     </div>
     <div class="typingindicator text-sm self-center w-24 mr-4">
     </div>
@@ -57,7 +57,7 @@
         <input type="file" id="fileinput" class="hidden" />
 
         <div class="flex flex-row items-center text-gray-600 gap-1">
-            <a href="javascript:;" class="px-1 pl-2 text-xl"><i class="fa-sharp fa-regular fa-face-smile"></i></a>
+            <!--a href="javascript:;" class="px-1 pl-2 text-xl"><i class="fa-sharp fa-regular fa-face-smile"></i></a-->
             <a href="javascript:;" class="uploadbtn px-1 text-xl hover:text-gray-600"><i
                     class="fa fa-paperclip"></i></a>
         </div>

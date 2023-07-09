@@ -28,3 +28,19 @@ body {
     color: white;
 }
 
+.acomplete {
+    width: 100%;
+    min-height: 0px;
+    max-height: 200px;
+    background: white;
+    z-index: 100;
+    left: 0;
+    bottom: 59;
+    overflow-y: scroll;
+}
+.acomplete > li {
+    padding: 2px 6px;
+}
+.acomplete > li.sel {
+    background: #ccc;
+}

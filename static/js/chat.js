@@ -1,5 +1,6 @@
 $.fn.chatBubble = function () {};
 var firstPoll = true;
+var colounEmojiRe = /:[a-z_]+:/g;
 
 var poller = function () {
     var lastChatId = "0";
@@ -81,13 +82,27 @@ var renderSingleChat = function (markup, viaSelf) {
     var crypto = new SimpleCrypto(room_id);
 
     var cipheredMsg = lastEntry.find("script").html();
+    var decrypted = "";
     if (cipheredMsg != "__image__") {
-        var decrypted = crypto.decrypt(cipheredMsg);
+        decrypted = crypto.decrypt(cipheredMsg);
+        var matches = decrypted.match(colounEmojiRe);
+        if (matches != null) {
+            for (var i = 0; i < matches.length; i++) {
+                var emoji = matches[i].substr(1, matches[i].length - 2);
+                console.log(
+                    "Replacing",
+                    matches[i],
+                    emoji,
+                    emojiData[emoji.trim()]
+                );
+                decrypted = decrypted.replace(matches[i], emojiData[emoji]);
+            }
+        }
         lastEntry.find(".decrypted").html(decrypted);
     }
 
     var rawMsg = lastEntry.find(".decrypted").html();
-    if ((rawMsg, regex.test(rawMsg))) {
+    if (rawMsg.trim().match(regex)) {
         /* Its an empty emoji */
         lastEntry.find(".decrypted").addClass("text-4xl");
     }
@@ -112,8 +127,17 @@ $(document).ready(function () {
         $(".chatwriter").focus();
     });
 
+    $(".chatinput").on("keyup", function (e) {
+        return autocomplete(e, e.keyCode);
+    });
+
+    $(".chatinput").on("keydown", function (e) {
+        return arrowMovement(e);
+    });
+
     $(".chatinput").on("keypress", function (e) {
         if (e.keyCode != 13) {
+            /* Not enter Key */
             var now = new Date().getTime() / 1000;
             if (lastTyped == null || now - lastTyped > typingTTL) {
                 lastTyped = now;
@@ -127,10 +151,40 @@ $(document).ready(function () {
         e.preventDefault();
         e.stopPropagation();
 
-        if ($(".chatwriter").val().trim() == "") {
+        var chatMsg = $(".chatwriter").val().trim();
+        if (chatMsg == "") {
             return;
         }
-        $(".chatinput").submit();
+
+        console.log("AC has", lastACSelected);
+        if (lastACSelected == "" || typeof lastACSelected == "undefined") {
+            $(".chatinput").submit();
+        } else {
+            var carentPos = $(".chatwriter").prop("selectionStart");
+            var textAreaText = $(".chatwriter").val();
+            for (var i = carentPos - 1; i >= 0; i--) {
+                var code = textAreaText.charCodeAt(i);
+                if (
+                    !(
+                        (code > 47 && code < 58) ||
+                        (code > 64 && code < 91) ||
+                        (code > 96 && code < 123)
+                    )
+                ) {
+                    console.log("replaceing", i, carentPos);
+                    var newTextAreaText =
+                        textAreaText.substr(0, i) +
+                        lastACSelected +
+                        " " +
+                        textAreaText.substr(carentPos, textAreaText.length);
+                    console.log(newTextAreaText);
+                    $(".chatwriter").val(newTextAreaText);
+                    $(".acomplete").addClass("hidden");
+                    lastACSelected = "";
+                    break;
+                }
+            }
+        }
         return false;
     });
 
